@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Nostro Matrimonio - Sara & Stefano</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-dancing {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Splash screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('https://raw.githubusercontent.com/stefanotassinari97-hash/Prova_matrimonio_2.github.io/main/images/foto_grande.jpg?v=2') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+            touch-action: none;
+        }
+
+        .splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-30px);
+        }
+
+        .splash-content {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            max-width: 700px;
+        }
+
+        .splash-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .splash-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .unlock-container {
+            margin-top: 2rem;
+        }
+
+        .unlock-bar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 60px;
+            padding: 18px 45px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            user-select: none;
+        }
+
+        .unlock-bar:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px);
+        }
+
+        .unlock-bar:active {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .unlock-text {
+            font-size: 1.3rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .arrow-icon {
+            font-size: 1.8rem;
+            animation: float 2s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* Main content */
+        .main-content {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* Hero section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f0f7f0 0%, #d4ead4 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            padding: 2rem;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            color: #2d6a2d;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-date {
+            font-size: 2rem;
+            color: #4a8c4a;
+            margin-bottom: 3rem;
+        }
+
+        .hero-floral {
+            position: absolute;
+            width: 25%;
+            /* max-width: 400px; */
+            min-width: 80px;
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        .hero-floral-1 {
+            top: 10%;
+            left: 5%;
+            transform: rotate(-15deg);
+        }
+
+        .hero-floral-2 {
+            bottom: 10%;
+            right: 5%;
+            transform: rotate(15deg);
+        }
+
+        /* Details section */
+        .details-section {
+            padding: 5rem 2rem;
+            background: #f0f7f0;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #2d6a2d;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(45, 106, 45, 0.1);
+        }
+
+        .detail-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        a.detail-card {
+            text-decoration: none;
+            cursor: pointer;
+            display: block;
+        }
+
+        .detail-icon {
+            font-size: 3rem;
+            color: #4a8c4a;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-title {
+            font-size: 1.8rem;
+            color: #2d6a2d;
+            margin-bottom: 1rem;
+        }
+
+        .detail-text {
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-hearts {
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .splash-title {
+                font-size: 2.5rem;
+            }
+            .splash-subtitle {
+                font-size: 1.2rem;
+            }
+            .hero-title {
+                font-size: 3rem;
+            }
+            .hero-date {
+                font-size: 1.5rem;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+            .detail-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splash">
+        <div class="splash-content">
+            <h1 class="splash-title font-dancing">Sara & Stefano</h1>
+            <p class="splash-subtitle">Vi invitano a celebrare il loro amore</p>
+            <div class="unlock-container">
+                <div class="unlock-bar" id="unlockBar">
+                    <span class="unlock-text">Scorri o clicca per scoprire</span>
+                    <span class="arrow-icon">➜</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Hero Section -->
+        <section class="hero">
+            <img src="https://raw.githubusercontent.com/stefanotassinari97-hash/Prova_matrimonio_2.github.io/main/images/img_1.jpg?v=2" alt="Floral" class="hero-floral hero-floral-1">
+            <img src="https://raw.githubusercontent.com/stefanotassinari97-hash/Prova_matrimonio_2.github.io/main/images/img_5.jpg?v=2" alt="Floral" class="hero-floral hero-floral-2">
+            <div class="hero-content">
+                <h1 class="hero-title font-dancing">Sara & Stefano</h1>
+                <p class="hero-date font-playfair">15 Giugno 2025</p>
+                <p class="text-xl text-gray-700 max-w-2xl mx-auto mt-6">Con gioia nel cuore, vi invitiamo a condividere con noi il giorno più bello della nostra vita.</p>
+            </div>
+        </section>
+
+        <!-- Details -->
+        <section class="details-section">
+            <h2 class="section-title font-playfair">I dettagli della giornata</h2>
+            <div class="details-grid">
+                <a class="detail-card" href="https://maps.app.goo.gl/h35iSmGDXWYMYuZQA" target="_blank" rel="noopener">
+                    <div class="detail-icon">⛪</div>
+                    <h3 class="detail-title font-playfair">Cerimonia</h3>
+                    <p class="detail-text">Chiesa di San Pietro<br>Via Roma, 123<br>Ore 15:00</p>
+                    <p class="mt-4 text-gray-600">La cerimonia religiosa sarà celebrata da Don Mario Rossi.</p>
+                </a>
+                <a class="detail-card" href="https://maps.app.goo.gl/FYA6hYuA2w6UgFcr7" target="_blank" rel="noopener">
+                    <div class="detail-icon">🍾</div>
+                    <h3 class="detail-title font-playfair">Ricevimento</h3>
+                    <p class="detail-text">Villa Bellini<br>Via dei Fiori, 45<br>Dopo la cerimonia</p>
+                    <p class="mt-4 text-gray-600">Cena, balli e festeggiamenti in una splendida villa rinascimentale.</p>
+                </a>
+                <a class="detail-card" href="https://stefanotassinari97-hash.github.io/Prova_matrimonio_2.github.io/" target="_blank" rel="noopener">
+                    <div class="detail-icon">🎁</div>
+                    <h3 class="detail-title font-playfair">Lista Nozze</h3>
+                    <p class="detail-text">La vostra presenza è il regalo più bello.<br>Se desiderate farci un dono, clicca qui per passare alla lista di nozze.</p>
+                    <p class="mt-4 text-gray-600">Contattate i nostri testimoni per informazioni.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">Con amore, Sara & Stefano</p>
+            <div class="footer-hearts">❤️ ❤️ ❤️</div>
+            <p class="text-gray-400">15 Giugno 2025 - Villa Bellini</p>
+            <p class="text-gray-400 mt-4">Per informazioni: +39 333 123 4567 - info@saraestefano.it</p>
+        </footer>
+    </div>
+
+    <script>
+        const splash = document.getElementById('splash');
+        const mainContent = document.getElementById('mainContent');
+        const unlockBar = document.getElementById('unlockBar');
+
+        // ── CLICK sul pulsante ──────────────────────────────────────────────
+        unlockBar.addEventListener('click', function (e) {
+            // Evita che il click venga interpretato anche come fine-drag
+            if (wasDragging) return;
+            revealContent();
+        });
+
+        // ── DRAG / SWIPE ────────────────────────────────────────────────────
+        let startY = 0;
+        let isDragging = false;
+        let wasDragging = false;   // flag per distinguere click da drag
+
+        const startDrag = (e) => {
+            startY = e.touches ? e.touches[0].clientY : e.clientY;
+            isDragging = true;
+            wasDragging = false;
+            splash.style.transition = 'none';
+        };
+
+        const doDrag = (e) => {
+            if (!isDragging) return;
+            const currentY = e.touches ? e.touches[0].clientY : e.clientY;
+            const diffY = startY - currentY;
+            if (diffY > 5) {
+                wasDragging = true;   // movimento significativo → è un drag, non un click
+            }
+            if (diffY > 0) {
+                splash.style.transform = `translateY(-${diffY}px)`;
+                splash.style.opacity = 1 - (diffY / window.innerHeight);
+            }
+        };
+
+        const stopDrag = (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            const currentY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+            const diffY = startY - currentY;
+            const threshold = window.innerHeight * 0.20;
+            splash.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+            if (diffY > threshold) {
+                revealContent();
+            } else {
+                splash.style.transform = 'translateY(0)';
+                splash.style.opacity = '1';
+            }
+        };
+
+        // Touch events (mobile)
+        splash.addEventListener('touchstart', startDrag);
+        splash.addEventListener('touchmove', doDrag);
+        splash.addEventListener('touchend', stopDrag);
+
+        // Mouse events (desktop – drag sulla splash intera)
+        splash.addEventListener('mousedown', startDrag);
+        window.addEventListener('mousemove', doDrag);
+        window.addEventListener('mouseup', stopDrag);
+
+        // ── Funzione principale ─────────────────────────────────────────────
+        function revealContent() {
+            splash.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+            splash.style.transform = 'translateY(-100%)';
+            splash.style.opacity = '0';
+            setTimeout(() => splash.classList.add('hidden'), 500);
+            mainContent.classList.add('visible');
+        }
+
+        // ── Parallax on scroll ──────────────────────────────────────────────
+        window.addEventListener('scroll', function () {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.1}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
