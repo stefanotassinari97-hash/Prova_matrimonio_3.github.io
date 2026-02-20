@@ -644,19 +644,19 @@
             letterWrap.classList.add('farewell');
             letterWrap.style.transform = 'translateY(-145%)';
             letterWrap.style.opacity   = '0';
-        }, 4800);
+        }, 3800);
 
         // ── t = 5.2s ─────────────────────────────────────
         // Busta sfuma completamente
         setTimeout(() => {
             envelope.style.opacity = '0';
-        }, 1000);
+        }, 4000);
 
         // ── t = 5.5s ─────────────────────────────────────
         // Flash bianco
         setTimeout(() => {
             overlay.classList.add('flash');
-        }, 500);
+        }, 4500);
 
         // ── t = 5.85s ────────────────────────────────────
         // Sito visibile sotto il flash
@@ -664,14 +664,14 @@
             mainContent.classList.add('visible');
             document.body.classList.add('revealed');
             heroBg.classList.add('loaded');
-        }, 850);
+        }, 4850);
 
         // ── t = 6.1s ─────────────────────────────────────
         // Flash sfuma
         setTimeout(() => {
             overlay.classList.remove('flash');
             overlay.classList.add('unflash');
-        }, 1100);
+        }, 5100);
 
         // ── t = 7.0s ─────────────────────────────────────
         // Pulizia finale
