@@ -656,7 +656,7 @@
         // Flash bianco
         setTimeout(() => {
             overlay.classList.add('flash');
-        }, 4500);
+        }, 4100);
 
         // ── t = 5.85s ────────────────────────────────────
         // Sito visibile sotto il flash
@@ -664,21 +664,21 @@
             mainContent.classList.add('visible');
             document.body.classList.add('revealed');
             heroBg.classList.add('loaded');
-        }, 4850);
+        }, 4250);
 
         // ── t = 6.1s ─────────────────────────────────────
         // Flash sfuma
         setTimeout(() => {
             overlay.classList.remove('flash');
             overlay.classList.add('unflash');
-        }, 5100);
+        }, 4600);
 
         // ── t = 7.0s ─────────────────────────────────────
         // Pulizia finale
         setTimeout(() => {
             scene.style.display = 'none';
             phase = 'done';
-        }, 7000);
+        }, 5000);
     });
 
     // Parallax hero al scroll
