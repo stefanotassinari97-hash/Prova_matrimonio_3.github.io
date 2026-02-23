@@ -448,6 +448,51 @@
         .hero-scroll-arrow { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.35); font-size: 1.3rem; z-index: 3; animation: arrowBounce 2s ease infinite; }
         @keyframes arrowBounce { 0%,100% { transform:translateX(-50%) translateY(0); } 50% { transform:translateX(-50%) translateY(8px); } }
 
+    /* ── Scroll CTA ── */
+    .scroll-cta {
+        position: fixed;
+        bottom: 2.2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        z-index: 500;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.6s ease;
+    }
+    .scroll-cta.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .scroll-cta.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .scroll-cta-text {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 0.78rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.75);
+        text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+        white-space: nowrap;
+    }
+    .scroll-cta-arrow {
+        font-size: 1.4rem;
+        color: rgba(255,255,255,0.75);
+        text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+        animation: scrollArrowBounce 1.8s ease-in-out infinite;
+        line-height: 1;
+    }
+    @keyframes scrollArrowBounce {
+        0%,100% { transform: translateY(0); }
+        50%      { transform: translateY(7px); }
+    }
+        
         /* ── Details ── */
         .details-section { padding: 6rem 2rem; background: var(--sage-pale); }
         .section-eyebrow { text-align:center; font-size:0.7rem; letter-spacing:5px; text-transform:uppercase; color:var(--sage); margin-bottom:0.6rem; }
@@ -567,7 +612,13 @@
         </div>
         <div class="hero-scroll-arrow">↓</div>
     </section>
-
+    
+    <!-- ── Freccia "Scorri per i dettagli" ── -->
+    <div class="scroll-cta" id="scrollCta">
+        <span class="scroll-cta-text">Scorri per i dettagli</span>
+        <div class="scroll-cta-arrow">↓</div>
+    </div>
+    
     <section class="details-section">
         <p class="section-eyebrow">La nostra giornata</p>
         <h2 class="section-title">I dettagli</h2>
