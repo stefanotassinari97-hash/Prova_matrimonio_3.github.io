@@ -733,6 +733,25 @@
         setTimeout(() => {
             scene.style.display = 'none';
             phase = 'done';
+            // phase = 'done';
+
+            // Mostra la freccia "Scorri per i dettagli"
+            scrollCta.classList.add('visible');
+
+            // Nascondi quando l'utente ha già scrollato
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 80) {
+                    scrollCta.classList.remove('visible');
+                    scrollCta.classList.add('hidden');
+                } else {
+                    scrollCta.classList.remove('hidden');
+                    scrollCta.classList.add('visible');
+                }
+            });
+
+            // Click → scrolla ai dettagli
+            scrollCta.addEventListener('click', () => {
+                document.getElementById('detailsSection').scrollIntoView({ behavior: 'smooth' });
         }, 5000);
     });
 
