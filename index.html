@@ -269,7 +269,7 @@
            .letter-outer diventa overflow:visible e z-index alto,
            e .letter-wrap sale verso l'alto.
         ══════════════════════════════════════ */
-        /* .letter-outer {
+        .letter-outer {
             position: absolute;
             bottom: 3%; left: 4%; right: 4%;
             height: 100%;
@@ -277,36 +277,20 @@
             /* z-index: 12;          /* sotto il body → invisibile */ */
             /* overflow: hidden; */
             pointer-events: none;
-        } */
-        .letter-outer {
-    position: absolute;
-    bottom: 3%; left: 4%; right: 4%;
-    height: 100%;
-    z-index: 6;          /* sopra il body ma sotto il flap (z-index 10) */
-    overflow: hidden;
-    pointer-events: none;
-    }
+        }
         .envelope.open .letter-outer {
             z-index: 12;         /* sopra tutto quando aperta */
             overflow: visible;
         }
 
-        /* .letter-wrap {
+        .letter-wrap {
             position: absolute;
             bottom: 0; left: 0; right: 0;
             /* nascosta dentro la busta */
             transform: translateY(0%);
             transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) 0.45s;
             filter: drop-shadow(0 -10px 28px rgba(0,0,0,0.55));
-        } */
-        /* Modifica in .letter-wrap — posizione iniziale */
-    .letter-wrap {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    transform: translateY(72%);  /* era translateY(0%) — mostra la parte superiore */
-    transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) 0.45s;
-    filter: drop-shadow(0 -10px 28px rgba(0,0,0,0.55));
-    }
+        }
         /* Sale fuori */
         .envelope.open .letter-wrap {
             transform: translateY(-88%);
