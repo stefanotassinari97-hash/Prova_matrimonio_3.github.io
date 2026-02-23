@@ -389,10 +389,11 @@
     .hero-bg {
         position: absolute; inset: 0;
         background: url('https://raw.githubusercontent.com/stefanotassinari97-hash/Prova_matrimonio_2.github.io/main/images/foto_grande.jpg?v=2') center/cover no-repeat;
-        transform: scale(1.06);
+        transform: scale(1.12);
         transition: transform 8s ease;
     }
-    .hero-bg.loaded { transform: scale(1); }
+    /* .hero-bg.loaded { transform: scale(1); } */
+    .hero-bg.loaded { transform: scale(1.12); }
     .hero-overlay {
         position: absolute; inset: 0;
         background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.32) 40%, rgba(0,0,0,0.62) 100%);
@@ -695,7 +696,8 @@
     // Parallax hero
     window.addEventListener('scroll', () => {
         if (phase !== 'done') return;
-        heroBg.style.transform = `scale(1) translateY(${window.pageYOffset * 0.28}px)`;
+        // heroBg.style.transform = `scale(1) translateY(${window.pageYOffset * 0.28}px)`;
+        const offset = Math.min(window.pageYOffset * 0.25, window.innerHeight * 0.25); heroBg.style.transform = `scale(1.12) translateY(${offset}px)`;
     });
 </script>
 
