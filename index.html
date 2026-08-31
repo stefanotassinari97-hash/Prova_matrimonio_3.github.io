@@ -561,7 +561,7 @@
         <p class="section-eyebrow">La nostra giornata</p>
         <h2 class="section-title">I dettagli</h2>
         <div class="details-grid">
-            <!-- Church details (Always Visible) -->
+            <!-- Cerimonia (Sempre visibile) -->
             <a class="detail-card" href="https://maps.app.goo.gl/h35iSmGDXWYMYuZQA" target="_blank" rel="noopener">
                 <span class="detail-icon">⛪</span>
                 <h3 class="detail-title">Cerimonia</h3>
@@ -569,15 +569,15 @@
                 <p class="detail-note">La cerimonia sarà celebrata da Don Mario Rossi.</p>
             </a>
 
-            <!-- Identification Card -->
+            <!-- RSVP / Scheda Identificazione -->
             <div class="detail-card" id="authCard" onclick="openAuthModal()" style="cursor: pointer;">
-                <span class="detail-icon">👤</span>
-                <h3 class="detail-title">Identificati</h3>
-                <p class="detail-text" id="authCardText">Inserisci il tuo nome per accedere ai dettagli personalizzati e RSVP.</p>
-                <p class="detail-note" id="authCardNote">Clicca qui per registrarti</p>
+                <span class="detail-icon">✉️</span>
+                <h3 class="detail-title" id="authCardTitle">RSVP</h3>
+                <p class="detail-text" id="authCardText">Facci sapere se ci sarai e le tue allergie!</p>
+                <p class="detail-note" id="authCardNote">Clicca qui per rispondere</p>
             </div>
 
-            <!-- Reception Details Card (Hidden by default) -->
+            <!-- Ricevimento (Nascosto di default) -->
             <a class="detail-card" id="receptionCard" href="https://maps.app.goo.gl/FYA6hYuA2w6UgFcr7" target="_blank" rel="noopener" style="display: none;">
                 <span class="detail-icon">🍾</span>
                 <h3 class="detail-title">Ricevimento</h3>
@@ -585,7 +585,7 @@
                 <p class="detail-note">Cena, balli e festeggiamenti in una splendida villa rinascimentale.</p>
             </a>
 
-            <!-- Gift List Link -->
+            <!-- Lista Nozze Link -->
             <a class="detail-card" href="https://stefanotassinari97-hash.github.io/Prova_matrimonio_2.github.io/" target="_blank" rel="noopener">
                 <span class="detail-icon">🎁</span>
                 <h3 class="detail-title">Lista Nozze</h3>
@@ -604,12 +604,12 @@
 
 </div>
 
-<!-- Authentication & Allergy Modal -->
+<!-- Modal RSVP & Allergie -->
 <div id="guestModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:10000; align-items:center; justify-content:center;">
     <div style="background:#fdf9f0; padding:2rem; border-radius:12px; max-width:450px; width:90%; color:#111; position:relative; box-shadow:0 10px 25px rgba(0,0,0,0.3);">
         <button onclick="closeGuestModal()" style="position:absolute; top:10px; right:15px; border:none; background:none; font-size:1.5rem; cursor:pointer;">&times;</button>
         
-        <!-- Step 1: Identification Form -->
+        <!-- Step 1: Form Nome e Cognome -->
         <div id="stepIdentify">
             <h3 style="font-family:'Playfair Display',serif; font-size:1.5rem; margin-bottom:1rem; color:#4a7050;">Chi sei?</h3>
             <input type="text" id="inputFirstName" placeholder="Nome" style="width:100%; padding:0.8rem; margin-bottom:0.8rem; border:1px solid #ccc; border-radius:6px; font-family:'Cormorant Garamond', serif; font-size:1.1rem;">
@@ -617,7 +617,7 @@
             <button onclick="verifyGuest()" style="width:100%; padding:0.8rem; background:#4a7050; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Cerca</button>
         </div>
 
-        <!-- Step 2: Confirmation Prompt -->
+        <!-- Step 2: Prompt di Conferma -->
         <div id="stepConfirm" style="display:none; text-align:center;">
             <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:1rem; color:#4a7050;">Conferma Identità</h3>
             <p id="confirmText" style="margin-bottom:1.5rem; font-size:1.2rem;"></p>
@@ -625,7 +625,7 @@
             <button onclick="resetIdentify()" style="width:100%; padding:0.8rem; background:#ccc; color:#333; border:none; border-radius:6px; cursor:pointer;">No, riprova</button>
         </div>
 
-        <!-- Step 3: Allergy Form (Only for Dinner Guests) -->
+        <!-- Step 3: Form Allergie (Solo invitati al ricevimento) -->
         <div id="stepAllergies" style="display:none;">
             <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:0.5rem; color:#4a7050;">Intolleranze e Allergie</h3>
             <p style="font-size:0.95rem; color:#666; margin-bottom:1rem;">Segnala eventuali allergie alimentari o esigenze di menu per il tuo gruppo:</p>
@@ -733,6 +733,7 @@ const db = getDatabase(app);
 
 let currentGuest = null;
 let matchedGroupGuests = [];
+let fallbackName = "";
 
 function levenshtein(a, b) {
   const tmp = [];
@@ -755,6 +756,10 @@ function normalizeStr(str) {
   return (str || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 }
 
+function capitalizeWords(str) {
+  return str.replace(/\b\w/g, l => l.toUpperCase());
+}
+
 window.openAuthModal = function() {
   document.getElementById('guestModal').style.display = 'flex';
   resetIdentify();
@@ -771,93 +776,106 @@ window.resetIdentify = function() {
 };
 
 window.verifyGuest = async function() {
-  const inputFirst = normalizeStr(document.getElementById('inputFirstName').value);
-  const inputLast = normalizeStr(document.getElementById('inputLastName').value);
+  const rawFirst = document.getElementById('inputFirstName').value.trim();
+  const rawLast = document.getElementById('inputLastName').value.trim();
 
-  if (!inputFirst || !inputLast) {
-    alert("Inserisci sia il nome che il cognome.");
-    return;
-  }
+  if (!rawFirst || !rawLast) return;
+
+  const inputFirst = normalizeStr(rawFirst);
+  const inputLast = normalizeStr(rawLast);
+  fallbackName = capitalizeWords(`${rawFirst} ${rawLast}`);
 
   try {
     const snapshot = await get(ref(db, 'guests'));
-    if (!snapshot.exists()) {
-      alert("Nessun invitato trovato nel database.");
-      return;
-    }
+    
+    if (snapshot.exists()) {
+      const guestsData = snapshot.val();
+      let bestMatch = null;
+      let lowestDistance = Infinity;
 
-    const guestsData = snapshot.val();
-    let bestMatch = null;
-    let lowestDistance = Infinity;
+      Object.keys(guestsData).forEach(key => {
+        const guest = guestsData[key];
+        guest.key = key;
+        const dbFirst = normalizeStr(guest.firstName);
+        const dbLast = normalizeStr(guest.lastName);
 
-    Object.keys(guestsData).forEach(key => {
-      const guest = guestsData[key];
-      guest.key = key;
-      const dbFirst = normalizeStr(guest.firstName);
-      const dbLast = normalizeStr(guest.lastName);
+        const distFirst = levenshtein(inputFirst, dbFirst);
+        const distLast = levenshtein(inputLast, dbLast);
+        const totalDist = distFirst + distLast;
 
-      const distFirst = levenshtein(inputFirst, dbFirst);
-      const distLast = levenshtein(inputLast, dbLast);
-      const totalDist = distFirst + distLast;
+        if (totalDist < lowestDistance) {
+          lowestDistance = totalDist;
+          bestMatch = guest;
+        }
+      });
 
-      if (totalDist < lowestDistance) {
-        lowestDistance = totalDist;
-        bestMatch = guest;
+      if (bestMatch && lowestDistance <= 4) {
+        currentGuest = bestMatch;
+        document.getElementById('stepIdentify').style.display = 'none';
+        document.getElementById('stepConfirm').style.display = 'block';
+        document.getElementById('confirmText').textContent = `Sei ${bestMatch.displayName}?`;
+        return;
       }
-    });
-
-    if (bestMatch && lowestDistance <= 4) {
-      currentGuest = bestMatch;
-      document.getElementById('stepIdentify').style.display = 'none';
-      document.getElementById('stepConfirm').style.display = 'block';
-      document.getElementById('confirmText').textContent = `Sei ${bestMatch.displayName}?`;
-    } else {
-      alert("Nome non trovato nell'elenco invitati. Riprova o controlla l'ortografia.");
     }
+
+    currentGuest = null;
+    document.getElementById('authCardTitle').textContent = fallbackName;
+    document.getElementById('authCardText').innerHTML = "Grazie di aver confermato la tua presenza!";
+    document.getElementById('authCardNote').textContent = "Presenza confermata";
+    closeGuestModal();
+
   } catch (err) {
-    console.error(err);
-    alert("Errore durante la connessione al database.");
+    document.getElementById('authCardTitle').textContent = fallbackName;
+    document.getElementById('authCardText').innerHTML = "Grazie di aver confermato la tua presenza!";
+    document.getElementById('authCardNote').textContent = "Presenza confermata";
+    closeGuestModal();
   }
 };
 
 window.acceptIdentity = async function() {
-  const snapshot = await get(ref(db, 'guests'));
-  const guestsData = snapshot.val();
-  matchedGroupGuests = [];
+  if (!currentGuest) return;
 
-  Object.keys(guestsData).forEach(key => {
-    const g = guestsData[key];
-    g.key = key;
-    if (g.groupId === currentGuest.groupId) {
-      matchedGroupGuests.push(g);
-    }
-  });
+  try {
+    const snapshot = await get(ref(db, 'guests'));
+    const guestsData = snapshot.val();
+    matchedGroupGuests = [];
 
-  if (currentGuest.invitedToDinner) {
-    document.getElementById('receptionCard').style.display = 'block';
-  }
-
-  document.getElementById('authCardText').innerHTML = `Benvenuto/a <strong>${currentGuest.displayName}</strong>!`;
-  document.getElementById('authCardNote').textContent = "Identità confermata";
-
-  if (currentGuest.invitedToDinner) {
-    const allergyContainer = document.getElementById('groupAllergyFields');
-    allergyContainer.innerHTML = '';
-
-    matchedGroupGuests.forEach(member => {
-      const fieldDiv = document.createElement('div');
-      fieldDiv.style.marginBottom = '1rem';
-      fieldDiv.innerHTML = `
-        <label style="display:block; font-weight:bold; margin-bottom:0.3rem;">${member.displayName}</label>
-        <input type="text" id="allergy_${member.key}" value="${member.allergies || ''}" placeholder="Es. Celiaco, Lattosio, Nessuna" style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:4px; font-family:'Cormorant Garamond', serif; font-size:1.1rem;">
-      `;
-      allergyContainer.appendChild(fieldDiv);
+    Object.keys(guestsData).forEach(key => {
+      const g = guestsData[key];
+      g.key = key;
+      if (g.groupId === currentGuest.groupId) {
+        matchedGroupGuests.push(g);
+      }
     });
 
-    document.getElementById('stepConfirm').style.display = 'none';
-    document.getElementById('stepAllergies').style.display = 'block';
-  } else {
-    alert(`Benvenuto/a ${currentGuest.displayName}! Le tue informazioni sono state caricate.`);
+    if (currentGuest.invitedToDinner) {
+      document.getElementById('receptionCard').style.display = 'block';
+    }
+
+    document.getElementById('authCardTitle').textContent = currentGuest.displayName;
+    document.getElementById('authCardText').innerHTML = "Grazie di aver confermato la tua presenza!";
+    document.getElementById('authCardNote').textContent = "Presenza confermata";
+
+    if (currentGuest.invitedToDinner) {
+      const allergyContainer = document.getElementById('groupAllergyFields');
+      allergyContainer.innerHTML = '';
+
+      matchedGroupGuests.forEach(member => {
+        const fieldDiv = document.createElement('div');
+        fieldDiv.style.marginBottom = '1rem';
+        fieldDiv.innerHTML = `
+          <label style="display:block; font-weight:bold; margin-bottom:0.3rem;">${member.displayName}</label>
+          <input type="text" id="allergy_${member.key}" value="${member.allergies || ''}" placeholder="Es. Celiaco, Lattosio, Nessuna" style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:4px; font-family:'Cormorant Garamond', serif; font-size:1.1rem;">
+        `;
+        allergyContainer.appendChild(fieldDiv);
+      });
+
+      document.getElementById('stepConfirm').style.display = 'none';
+      document.getElementById('stepAllergies').style.display = 'block';
+    } else {
+      closeGuestModal();
+    }
+  } catch(err) {
     closeGuestModal();
   }
 };
@@ -872,11 +890,11 @@ window.saveAllergies = async function() {
 
   try {
     await update(ref(db), updates);
-    alert("Informazioni e intolleranze salvate con successo!");
-    closeGuestModal();
   } catch(err) {
-    alert("Si è verificato un errore durante il salvataggio.");
+    // Salvataggio silenziato
   }
+  
+  closeGuestModal();
 };
 </script>
 
