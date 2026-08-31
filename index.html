@@ -1,4 +1,11 @@
-<!DOCTYPE html><html lang="it"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Il Nostro Matrimonio - Sara & Stefano</title> <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il Nostro Matrimonio - Sara & Stefano</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 
 <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,9 +30,6 @@
     }
     body.revealed { overflow: auto; }
 
-    /* ══════════════════════════════════════
-       SCENE
-    ══════════════════════════════════════ */
     #scene {
         position: fixed; inset: 0;
         display: flex; align-items: center; justify-content: center;
@@ -44,9 +48,6 @@
         background: radial-gradient(ellipse 55% 35% at 50% 52%, rgba(90,140,95,0.07) 0%, transparent 70%);
     }
 
-    /* ══════════════════════════════════════
-       ENVELOPE STAGE
-    ══════════════════════════════════════ */
     .env-stage {
         perspective: 1400px;
         width: min(460px, 88vw);
@@ -75,7 +76,6 @@
         50%      { transform: translateY(-8px) rotateX(0deg); }
     }
 
-    /* ── Body ── */
     .env-body {
         position: absolute; inset: 0;
         border-radius: 3px 3px 7px 7px;
@@ -178,7 +178,6 @@
     }
     .envelope.open .env-interior { opacity: 1; }
 
-    /* ── Top flap ── */
     .env-flap {
         position: absolute; top: 0; left: 0; right: 0; height: 60%;
         transform-origin: top center;
@@ -222,7 +221,6 @@
         transform: rotateX(180deg);
     }
 
-    /* ── Wax Seal ── */
     .wax-seal {
         position: absolute;
         top: 48%; left: 50%;
@@ -240,9 +238,6 @@
         opacity: 0;
     }
 
-    /* ══════════════════════════════════════
-       LETTER
-    ══════════════════════════════════════ */
     .letter-outer {
         position: absolute;
         bottom: 3%; left: 4%; right: 4%;
@@ -337,7 +332,6 @@
         margin-top: 0.35rem;
     }
 
-    /* ── Hint ── */
     .open-hint {
         position: absolute;
         bottom: -48px; left: 50%;
@@ -356,9 +350,6 @@
         50%      { opacity: 0.65; }
     }
 
-    /* ══════════════════════════════════════
-       TRANSITION OVERLAY
-    ══════════════════════════════════════ */
     #transition-overlay {
         position: fixed; inset: 0;
         background: rgba(255,255,255,0);
@@ -374,13 +365,9 @@
         transition: background 0.75s ease;
     }
 
-    /* ══════════════════════════════════════
-       MAIN CONTENT
-    ══════════════════════════════════════ */
     #main-content { opacity: 0; transition: opacity 0.7s ease; }
     #main-content.visible { opacity: 1; }
 
-    /* ── Hero ── */
     .hero {
         height: 100vh; position: relative;
         display: flex; align-items: center; justify-content: center;
@@ -392,7 +379,6 @@
         transform: scale(1.12);
         transition: transform 8s ease;
     }
-    /* .hero-bg.loaded { transform: scale(1); } */
     .hero-bg.loaded { transform: scale(1.12); }
     .hero-overlay {
         position: absolute; inset: 0;
@@ -413,7 +399,6 @@
     .hero-date { font-family: 'Playfair Display', serif; font-size: clamp(0.85rem, 2.2vw, 1.15rem); letter-spacing: 5px; text-transform: uppercase; color: rgba(255,255,255,0.72); margin-bottom: 1.4rem; }
     .hero-subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1rem, 2.5vw, 1.25rem); color: rgba(255,255,255,0.72); max-width: 500px; margin: 0 auto; line-height: 1.8; }
 
-    /* ── Scroll CTA ── */
     .scroll-cta {
         position: fixed;
         bottom: 2.2rem;
@@ -458,7 +443,6 @@
         50%      { transform: translateY(7px); }
     }
 
-    /* ── Details ── */
     .details-section { padding: 6rem 2rem; background: var(--sage-pale); }
     .section-eyebrow { text-align:center; font-size:0.7rem; letter-spacing:5px; text-transform:uppercase; color:var(--sage); margin-bottom:0.6rem; }
     .section-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3rem); text-align:center; color:var(--sage-dark); margin-bottom:3.5rem; }
@@ -470,7 +454,6 @@
     .detail-text  { font-size:1.1rem; color:#666; line-height:1.7; }
     .detail-note  { font-style:italic; font-size:.95rem; color:#999; margin-top:.8rem; }
 
-    /* ── Footer ── */
     .footer { background:#1c2b1e; color:rgba(255,255,255,0.6); padding:3.5rem 2rem; text-align:center; }
     .footer-names { font-family:'Dancing Script',cursive; font-size:2.5rem; color:var(--sage-light); margin-bottom:.5rem; }
     .footer-text  { font-size:.78rem; letter-spacing:3px; text-transform:uppercase; opacity:.42; }
@@ -488,14 +471,11 @@
 
 <div id="transition-overlay"></div>
 
-<!-- ═══════════════════════════════════════
-     PAGE 1 — ENVELOPE
-═══════════════════════════════════════ -->
+<!-- PAGE 1 — ENVELOPE -->
 <div id="scene">
     <div class="env-stage">
         <div class="envelope" id="envelope" onclick="apriEnvelope()">
 
-            <!-- Body -->
             <div class="env-body">
                 <div class="env-lining"></div>
                 <div class="env-interior"></div>
@@ -504,17 +484,14 @@
                 <div class="env-bottom"></div>
             </div>
 
-            <!-- Corner masks -->
             <div class="env-corner-left"></div>
             <div class="env-corner-right"></div>
 
-            <!-- Top flap -->
             <div class="env-flap">
                 <div class="env-flap-front"></div>
                 <div class="env-flap-back"></div>
             </div>
 
-            <!-- Wax seal -->
             <div class="wax-seal">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
                     <defs>
@@ -542,7 +519,6 @@
                 </svg>
             </div>
 
-            <!-- LETTERA -->
             <div class="letter-outer">
                 <div class="letter-wrap" id="letterWrap">
                     <div class="letter-card">
@@ -555,15 +531,13 @@
                 </div>
             </div>
 
-        </div><!-- /envelope -->
+        </div>
 
         <div class="open-hint" id="openHint">Clicca per aprire</div>
     </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     PAGE 2 — MAIN SITE
-═══════════════════════════════════════ -->
+<!-- PAGE 2 — MAIN SITE -->
 <div id="main-content">
 
     <section class="hero">
@@ -578,7 +552,6 @@
         </div>
     </section>
 
-    <!-- ── Freccia "Scorri per i dettagli" ── -->
     <div class="scroll-cta" id="scrollCta">
         <span class="scroll-cta-text">Scorri per i dettagli</span>
         <div class="scroll-cta-arrow">↓</div>
@@ -588,18 +561,31 @@
         <p class="section-eyebrow">La nostra giornata</p>
         <h2 class="section-title">I dettagli</h2>
         <div class="details-grid">
+            <!-- Church details (Always Visible) -->
             <a class="detail-card" href="https://maps.app.goo.gl/h35iSmGDXWYMYuZQA" target="_blank" rel="noopener">
                 <span class="detail-icon">⛪</span>
                 <h3 class="detail-title">Cerimonia</h3>
                 <p class="detail-text">Chiesa di San Pietro<br>Via Roma, 123<br>Ore 15:00</p>
                 <p class="detail-note">La cerimonia sarà celebrata da Don Mario Rossi.</p>
             </a>
-            <a class="detail-card" href="https://maps.app.goo.gl/FYA6hYuA2w6UgFcr7" target="_blank" rel="noopener">
+
+            <!-- Identification Card -->
+            <div class="detail-card" id="authCard" onclick="openAuthModal()" style="cursor: pointer;">
+                <span class="detail-icon">👤</span>
+                <h3 class="detail-title">Identificati</h3>
+                <p class="detail-text" id="authCardText">Inserisci il tuo nome per accedere ai dettagli personalizzati e RSVP.</p>
+                <p class="detail-note" id="authCardNote">Clicca qui per registrarti</p>
+            </div>
+
+            <!-- Reception Details Card (Hidden by default) -->
+            <a class="detail-card" id="receptionCard" href="https://maps.app.goo.gl/FYA6hYuA2w6UgFcr7" target="_blank" rel="noopener" style="display: none;">
                 <span class="detail-icon">🍾</span>
                 <h3 class="detail-title">Ricevimento</h3>
                 <p class="detail-text">Villa Bellini<br>Via dei Fiori, 45<br>Dopo la cerimonia</p>
                 <p class="detail-note">Cena, balli e festeggiamenti in una splendida villa rinascimentale.</p>
             </a>
+
+            <!-- Gift List Link -->
             <a class="detail-card" href="https://stefanotassinari97-hash.github.io/Prova_matrimonio_2.github.io/" target="_blank" rel="noopener">
                 <span class="detail-icon">🎁</span>
                 <h3 class="detail-title">Lista Nozze</h3>
@@ -614,12 +600,42 @@
         <p class="footer-text">Con amore</p>
         <div class="footer-hearts">♥ ♥ ♥</div>
         <p class="footer-info">15 Giugno 2025 · Villa Bellini</p>
-        <p class="footer-info">+39 333 123 4567 · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9cf5f2faf3dceffdeefdf9efe8f9fafdf2f3b2f5e8">[email&#160;protected]</a></p>
     </footer>
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<!-- Authentication & Allergy Modal -->
+<div id="guestModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:10000; align-items:center; justify-content:center;">
+    <div style="background:#fdf9f0; padding:2rem; border-radius:12px; max-width:450px; width:90%; color:#111; position:relative; box-shadow:0 10px 25px rgba(0,0,0,0.3);">
+        <button onclick="closeGuestModal()" style="position:absolute; top:10px; right:15px; border:none; background:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+        
+        <!-- Step 1: Identification Form -->
+        <div id="stepIdentify">
+            <h3 style="font-family:'Playfair Display',serif; font-size:1.5rem; margin-bottom:1rem; color:#4a7050;">Chi sei?</h3>
+            <input type="text" id="inputFirstName" placeholder="Nome" style="width:100%; padding:0.8rem; margin-bottom:0.8rem; border:1px solid #ccc; border-radius:6px; font-family:'Cormorant Garamond', serif; font-size:1.1rem;">
+            <input type="text" id="inputLastName" placeholder="Cognome" style="width:100%; padding:0.8rem; margin-bottom:1rem; border:1px solid #ccc; border-radius:6px; font-family:'Cormorant Garamond', serif; font-size:1.1rem;">
+            <button onclick="verifyGuest()" style="width:100%; padding:0.8rem; background:#4a7050; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Cerca</button>
+        </div>
+
+        <!-- Step 2: Confirmation Prompt -->
+        <div id="stepConfirm" style="display:none; text-align:center;">
+            <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:1rem; color:#4a7050;">Conferma Identità</h3>
+            <p id="confirmText" style="margin-bottom:1.5rem; font-size:1.2rem;"></p>
+            <button onclick="acceptIdentity()" style="width:100%; padding:0.8rem; background:#4a7050; color:white; border:none; border-radius:6px; cursor:pointer; margin-bottom:0.5rem; font-weight:bold;">Sì, sono io</button>
+            <button onclick="resetIdentify()" style="width:100%; padding:0.8rem; background:#ccc; color:#333; border:none; border-radius:6px; cursor:pointer;">No, riprova</button>
+        </div>
+
+        <!-- Step 3: Allergy Form (Only for Dinner Guests) -->
+        <div id="stepAllergies" style="display:none;">
+            <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:0.5rem; color:#4a7050;">Intolleranze e Allergie</h3>
+            <p style="font-size:0.95rem; color:#666; margin-bottom:1rem;">Segnala eventuali allergie alimentari o esigenze di menu per il tuo gruppo:</p>
+            <div id="groupAllergyFields"></div>
+            <button onclick="saveAllergies()" style="width:100%; padding:0.8rem; background:#4a7050; color:white; border:none; border-radius:6px; cursor:pointer; margin-top:1rem; font-weight:bold;">Salva e Conferma</button>
+        </div>
+    </div>
+</div>
+
+<script>
     const envelope   = document.getElementById('envelope');
     const scene      = document.getElementById('scene');
     const mainContent= document.getElementById('main-content');
@@ -672,10 +688,8 @@
             scene.style.display = 'none';
             phase = 'done';
 
-            // Mostra la freccia "Scorri per i dettagli"
             scrollCta.classList.add('visible');
 
-            // Nascondi quando l'utente ha già scrollato
             window.addEventListener('scroll', () => {
                 if (window.pageYOffset > 80) {
                     scrollCta.classList.remove('visible');
@@ -686,19 +700,184 @@
                 }
             });
 
-            // Click → scrolla ai dettagli
             scrollCta.addEventListener('click', () => {
                 document.getElementById('detailsSection').scrollIntoView({ behavior: 'smooth' });
             });
 
         }, 4600);
     }
-    // Parallax hero
+
     window.addEventListener('scroll', () => {
         if (phase !== 'done') return;
-        // heroBg.style.transform = `scale(1) translateY(${window.pageYOffset * 0.28}px)`;
-        const offset = Math.min(window.pageYOffset * 0.25, window.innerHeight * 0.25); heroBg.style.transform = `scale(1.12) translateY(${offset}px)`;
+        const offset = Math.min(window.pageYOffset * 0.25, window.innerHeight * 0.25); 
+        heroBg.style.transform = `scale(1.12) translateY(${offset}px)`;
     });
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyATAVj2MZuob6PWF5EfoEClS0gKNxNj4ZY",
+  authDomain: "lista-nozze-8a00c.firebaseapp.com",
+  databaseURL: "https://lista-nozze-8a00c-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "lista-nozze-8a00c",
+  storageBucket: "lista-nozze-8a00c.firebasestorage.app",
+  messagingSenderId: "65025205759",
+  appId: "1:65025205759:web:00484ce9897ab18b87f3ca"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+let currentGuest = null;
+let matchedGroupGuests = [];
+
+function levenshtein(a, b) {
+  const tmp = [];
+  let i, j;
+  for (i = 0; i <= a.length; i++) { tmp[i] = [i]; }
+  for (j = 0; j <= b.length; j++) { tmp[0][j] = j; }
+  for (i = 1; i <= a.length; i++) {
+    for (j = 1; j <= b.length; j++) {
+      tmp[i][j] = Math.min(
+        tmp[i - 1][j] + 1,
+        tmp[i][j - 1] + 1,
+        tmp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+      );
+    }
+  }
+  return tmp[a.length][b.length];
+}
+
+function normalizeStr(str) {
+  return (str || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+}
+
+window.openAuthModal = function() {
+  document.getElementById('guestModal').style.display = 'flex';
+  resetIdentify();
+};
+
+window.closeGuestModal = function() {
+  document.getElementById('guestModal').style.display = 'none';
+};
+
+window.resetIdentify = function() {
+  document.getElementById('stepIdentify').style.display = 'block';
+  document.getElementById('stepConfirm').style.display = 'none';
+  document.getElementById('stepAllergies').style.display = 'none';
+};
+
+window.verifyGuest = async function() {
+  const inputFirst = normalizeStr(document.getElementById('inputFirstName').value);
+  const inputLast = normalizeStr(document.getElementById('inputLastName').value);
+
+  if (!inputFirst || !inputLast) {
+    alert("Inserisci sia il nome che il cognome.");
+    return;
+  }
+
+  try {
+    const snapshot = await get(ref(db, 'guests'));
+    if (!snapshot.exists()) {
+      alert("Nessun invitato trovato nel database.");
+      return;
+    }
+
+    const guestsData = snapshot.val();
+    let bestMatch = null;
+    let lowestDistance = Infinity;
+
+    Object.keys(guestsData).forEach(key => {
+      const guest = guestsData[key];
+      guest.key = key;
+      const dbFirst = normalizeStr(guest.firstName);
+      const dbLast = normalizeStr(guest.lastName);
+
+      const distFirst = levenshtein(inputFirst, dbFirst);
+      const distLast = levenshtein(inputLast, dbLast);
+      const totalDist = distFirst + distLast;
+
+      if (totalDist < lowestDistance) {
+        lowestDistance = totalDist;
+        bestMatch = guest;
+      }
+    });
+
+    if (bestMatch && lowestDistance <= 4) {
+      currentGuest = bestMatch;
+      document.getElementById('stepIdentify').style.display = 'none';
+      document.getElementById('stepConfirm').style.display = 'block';
+      document.getElementById('confirmText').textContent = `Sei ${bestMatch.displayName}?`;
+    } else {
+      alert("Nome non trovato nell'elenco invitati. Riprova o controlla l'ortografia.");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Errore durante la connessione al database.");
+  }
+};
+
+window.acceptIdentity = async function() {
+  const snapshot = await get(ref(db, 'guests'));
+  const guestsData = snapshot.val();
+  matchedGroupGuests = [];
+
+  Object.keys(guestsData).forEach(key => {
+    const g = guestsData[key];
+    g.key = key;
+    if (g.groupId === currentGuest.groupId) {
+      matchedGroupGuests.push(g);
+    }
+  });
+
+  if (currentGuest.invitedToDinner) {
+    document.getElementById('receptionCard').style.display = 'block';
+  }
+
+  document.getElementById('authCardText').innerHTML = `Benvenuto/a <strong>${currentGuest.displayName}</strong>!`;
+  document.getElementById('authCardNote').textContent = "Identità confermata";
+
+  if (currentGuest.invitedToDinner) {
+    const allergyContainer = document.getElementById('groupAllergyFields');
+    allergyContainer.innerHTML = '';
+
+    matchedGroupGuests.forEach(member => {
+      const fieldDiv = document.createElement('div');
+      fieldDiv.style.marginBottom = '1rem';
+      fieldDiv.innerHTML = `
+        <label style="display:block; font-weight:bold; margin-bottom:0.3rem;">${member.displayName}</label>
+        <input type="text" id="allergy_${member.key}" value="${member.allergies || ''}" placeholder="Es. Celiaco, Lattosio, Nessuna" style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:4px; font-family:'Cormorant Garamond', serif; font-size:1.1rem;">
+      `;
+      allergyContainer.appendChild(fieldDiv);
+    });
+
+    document.getElementById('stepConfirm').style.display = 'none';
+    document.getElementById('stepAllergies').style.display = 'block';
+  } else {
+    alert(`Benvenuto/a ${currentGuest.displayName}! Le tue informazioni sono state caricate.`);
+    closeGuestModal();
+  }
+};
+
+window.saveAllergies = async function() {
+  const updates = {};
+  matchedGroupGuests.forEach(member => {
+    const val = document.getElementById(`allergy_${member.key}`).value;
+    updates[`guests/${member.key}/allergies`] = val;
+    updates[`guests/${member.key}/confirmed`] = true;
+  });
+
+  try {
+    await update(ref(db), updates);
+    alert("Informazioni e intolleranze salvate con successo!");
+    closeGuestModal();
+  } catch(err) {
+    alert("Si è verificato un errore durante il salvataggio.");
+  }
+};
 </script>
 
 </body>
