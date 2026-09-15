@@ -92,6 +92,7 @@
             0 8px 24px rgba(0,0,0,0.5),
             inset 0 1px 0 rgba(255,255,255,0.09),
             inset 0 -2px 6px rgba(0,0,0,0.25);
+        z-index: 1;
     }
 
     .env-bottom {
@@ -183,10 +184,14 @@
         transform-origin: top center;
         transform-style: preserve-3d;
         transform: rotateX(0deg);
-        transition: transform 1.0s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        transition: transform 1.0s cubic-bezier(0.36, 0.07, 0.19, 0.97), z-index 0s step-start;
         z-index: 10;
     }
-    .envelope.open .env-flap { transform: rotateX(-180deg); }
+    .envelope.open .env-flap { 
+        transform: rotateX(-180deg); 
+        z-index: 2;
+        transition: transform 1.0s cubic-bezier(0.36, 0.07, 0.19, 0.97), z-index 0s step-end 0.4s;
+    }
 
     .env-flap-front {
         position: absolute; inset: 0;
@@ -242,12 +247,11 @@
         position: absolute;
         bottom: 3%; left: 4%; right: 4%;
         height: 100%;
-        z-index: 0;
+        z-index: 3;
         overflow: hidden;
         pointer-events: none;
     }
     .envelope.open .letter-outer {
-        z-index: 12;
         overflow: visible;
     }
 
@@ -476,9 +480,14 @@
     <div class="env-stage">
         <div class="envelope" id="envelope" onclick="apriEnvelope()">
 
+            <!-- Sfondo interno ed effetto rivestimento della busta -->
             <div class="env-body">
                 <div class="env-lining"></div>
                 <div class="env-interior"></div>
+            </div>
+
+            <!-- Tasca frontale della busta (rimane davanti alla lettera) -->
+            <div class="env-pocket" style="position: absolute; inset: 0; z-index: 5; pointer-events: none;">
                 <div class="env-left"></div>
                 <div class="env-right"></div>
                 <div class="env-bottom"></div>
@@ -519,6 +528,7 @@
                 </svg>
             </div>
 
+            <!-- Lettera posizionata all'interno del sandwich 3D -->
             <div class="letter-outer">
                 <div class="letter-wrap" id="letterWrap">
                     <div class="letter-card">
@@ -561,7 +571,7 @@
         <p class="section-eyebrow">La nostra giornata</p>
         <h2 class="section-title">I dettagli</h2>
         <div class="details-grid">
-            <!-- Cerimonia (Sempre visibile) -->
+            <!-- Cerimonia -->
             <a class="detail-card" href="https://maps.google.com/?q=Chiesa+di+Sant'Angela+Merici+Roma+Via+di+Sant'Angela+Merici+57" target="_blank" rel="noopener">
                 <span class="detail-icon">⛪</span>
                 <h3 class="detail-title">Cerimonia</h3>
@@ -577,7 +587,7 @@
                 <p class="detail-note" id="authCardNote">Clicca qui per rispondere</p>
             </div>
 
-            <!-- Ricevimento (Nascosto di default) -->
+            <!-- Ricevimento -->
             <a class="detail-card" id="receptionCard" href="https://maps.google.com/?q=Borgo+di+Tragliata+Via+di+Tragliata+141+Fiumicino" target="_blank" rel="noopener" style="display: none;">
                 <span class="detail-icon">🍾</span>
                 <h3 class="detail-title">Ricevimento</h3>
@@ -854,7 +864,7 @@ window.acceptIdentity = async function() {
     allergyContainer.innerHTML = '';
 
     matchedGroupGuests.forEach(member => {
-      // Se non è stato mai salvato prima, default true (presente)
+      // Se non è mai stato salvato prima, default true (presente)
       const isChecked = member.confirmed !== false; 
 
       const fieldDiv = document.createElement('div');
@@ -907,7 +917,7 @@ window.saveAllergies = async function() {
   try {
     await update(ref(db), updates);
 
-    // Gestione visibilità ricevimento
+    // Mostra o nasconde la card del ricevimento a seconda della conferma effettiva di almeno un membro
     if (currentGuest.invitedToDinner && anyConfirmed) {
       document.getElementById('receptionCard').style.display = 'block';
     } else {
@@ -919,7 +929,7 @@ window.saveAllergies = async function() {
     document.getElementById('authCardNote').textContent = "Modifica risposte";
 
   } catch(err) {
-    // Salvataggio silenziato in caso di errori di rete
+    // Salvataggio silenziato in locale se Firebase risponde con errore
   }
   
   closeGuestModal();
