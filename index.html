@@ -95,6 +95,17 @@
         z-index: 1;
     }
 
+    /* Tasca frontale contenitrice */
+    .env-pocket {
+        position: absolute; inset: 0;
+        z-index: 4;
+        pointer-events: none;
+        transition: opacity 0.8s ease;
+    }
+    .envelope.sinking .env-pocket {
+        opacity: 0;
+    }
+
     .env-bottom {
         position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
         background:
@@ -125,31 +136,6 @@
         background: linear-gradient(240deg, #5a8060 0%, #3a5e3f 100%);
         clip-path: polygon(100% 0, 0 100%, 100% 100%);
         z-index: 2;
-    }
-
-    .env-corner-left,
-    .env-corner-right {
-        position: absolute;
-        bottom: 0;
-        width: 52%; height: 63%;
-        z-index: 20;
-        pointer-events: none;
-        transition: opacity 0.8s ease;
-    }
-    .env-corner-left {
-        left: 0;
-        background: linear-gradient(120deg, #5a8060 0%, #3a5e3f 100%);
-        clip-path: polygon(0 0, 0 100%, 100% 100%);
-        box-shadow: inset -1px 0 4px rgba(0,0,0,0.15);
-    }
-    .env-corner-right {
-        right: 0;
-        background: linear-gradient(240deg, #5a8060 0%, #3a5e3f 100%);
-        clip-path: polygon(100% 0, 0 100%, 100% 100%);
-    }
-    .envelope.sinking .env-corner-left,
-    .envelope.sinking .env-corner-right {
-        opacity: 0;
     }
 
     .env-lining {
@@ -480,21 +466,18 @@
     <div class="env-stage">
         <div class="envelope" id="envelope" onclick="apriEnvelope()">
 
-            <!-- Sfondo interno ed effetto rivestimento della busta -->
+            <!-- Sfondo interno ed effetto rivestimento della busta (Livello 1) -->
             <div class="env-body">
                 <div class="env-lining"></div>
                 <div class="env-interior"></div>
             </div>
 
-            <!-- Tasca frontale della busta (rimane davanti alla lettera) -->
-            <div class="env-pocket" style="position: absolute; inset: 0; z-index: 4; pointer-events: none;">
+            <!-- Tasca frontale della busta che copre fisicamente la lettera (Livello 4) -->
+            <div class="env-pocket">
                 <div class="env-left"></div>
                 <div class="env-right"></div>
                 <div class="env-bottom"></div>
             </div>
-
-            <div class="env-corner-left"></div>
-            <div class="env-corner-right"></div>
 
             <div class="env-flap">
                 <div class="env-flap-front"></div>
@@ -528,7 +511,7 @@
                 </svg>
             </div>
 
-            <!-- Lettera posizionata all'interno del sandwich 3D -->
+            <!-- Lettera posizionata fisicamente nel sandwich 3D (Livello 3) -->
             <div class="letter-outer">
                 <div class="letter-wrap" id="letterWrap">
                     <div class="letter-card">
