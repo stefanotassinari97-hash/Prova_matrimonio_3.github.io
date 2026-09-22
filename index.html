@@ -285,19 +285,20 @@ body.revealed { overflow: auto; }
     filter: drop-shadow(0 6px 18px rgba(0,0,0,0.5));
 }
 .env-stage.open .letter-wrap {
-    animation: letter-out 1s cubic-bezier(0.33, 0, 0.2, 1) 0.45s both;
+    /* Ritorno all'1%: un micro-istante per percepire la lettera dentro prima dello sfilamento */
+    animation: letter-out 2.0s cubic-bezier(0.33, 0, 0.2, 1) 0.4s both;
 }
 @keyframes letter-out {
-    0%   { transform: translateY(48%); }   /* giu', dentro la busta  */
-    21%  { transform: translateY(24%); }   /* si intravede nella bocca */
-    35%  { transform: translateY(24%); }   /* pausa: e' dentro       */
-    100% { transform: translateY(-60%); }  /* sfila fuori            */
+    0%   { transform: translateY(48%); }
+    1%   { transform: translateY(24%); }   /* Raggiunge l'angolino */
+    2%   { transform: translateY(24%); }   /* Brevissima sosta (1%) */
+    100% { transform: translateY(-60%); }  /* Sfila fuori completamente */
 }
 
 /* il galleggiamento vive su un elemento a se': non tocca mai la
    transizione di sfilamento, quindi non c'e' nessuno "restart"      */
 .letter-bob {
-    animation: letter-bob 2.0s ease-in-out infinite;
+    animation: letter-bob 3.4s ease-in-out infinite;
     animation-play-state: paused;
 }
 @keyframes letter-bob {
@@ -794,81 +795,59 @@ function apriEnvelope() {
     envStage.classList.add('open');
     envelope.classList.add('open');
 
-    // 2) sfilamento finito (0.45s + 2.85s di animazione): inizia a
-    //    galleggiare. L'animazione vive su un nodo separato, quindi
-    //    non viene MAI riavviata.
-    setTimeout(() => { letterBob.style.animationPlayState = 'running'; }, 3350);
+    // 2) sfilamento finito (0.4s + 2.0s): inizia a galleggiare.
+    setTimeout(() => { letterBob.style.animationPlayState = 'running'; }, 2450);
 
-    // 3) LA BUSTA SCENDE e la V del ritaglio scende CON LEI, dello
-    //    stesso numero di pixel, con la stessa durata e la stessa
-    //    curva. Cosi' il bordo della carta resta incollato alla bocca
-    //    della busta mentre questa le scivola via di dosso: la carta
-    //    sembra tenuta ferma e "sfilata" fuori. Nessun calcolo frame
-    //    per frame: se la transizione e' uguale, il sync e' perfetto.
+    // 3) LA BUSTA SCENDE
     setTimeout(() => {
         envelope.classList.add('sinking');
-
-        const sink = window.innerHeight * 1.2 + 320;   // px, ben oltre lo schermo
-        const boxH = letterOuter.offsetHeight;         // altezza reale del box
-        const dPct = (sink / boxH) * 100;              // discesa in %
-
+        const sink = window.innerHeight * 1.2 + 320;
+        const boxH = letterOuter.offsetHeight;
+        const dPct = (sink / boxH) * 100;
         envelope.style.transform = 'translateY(' + sink + 'px)';
-
-        const a = 56.4 + dPct;   // lati del triangolo chiaro
-        const b = 77.7 + dPct;   // punta del triangolo chiaro
-
+        const a = 56.4 + dPct;
+        const b = 77.7 + dPct;
         letterOuter.style.transition = 'clip-path 1.7s cubic-bezier(0.45, 0, 0.2, 1)';
-        letterOuter.style.clipPath =
-            'polygon(0% ' + a + '%, 50% ' + b + '%, 100% ' + a + '%, 100% 0%, 0% 0%)';
-    }, 4000);
+        letterOuter.style.clipPath = 'polygon(0% ' + a + '%, 50% ' + b + '%, 100% ' + a + '%, 100% 0%, 0% 0%)';
+    }, 3100);
 
-    // 3b) la busta e' ormai quasi andata: la carta plana al centro
-    //     dello schermo. Non viene spostata nel DOM, resta nel suo
-    //     contenitore: quindi non c'e' nessun frame in cui sparisce.
+    // 3b) ZOOM CARTA
     setTimeout(() => {
         const card  = letterOuter.querySelector('.letter-card');
         const cRect = card.getBoundingClientRect();
         const oRect = letterOuter.getBoundingClientRect();
-
-        // origine della trasformazione = centro della carta, cosi' lo
-        // zoom avviene esattamente attorno a lei
         const ox = (cRect.left + cRect.width  / 2) - oRect.left;
         const oy = (cRect.top  + cRect.height / 2) - oRect.top;
         letterOuter.style.transformOrigin = ox + 'px ' + oy + 'px';
-
         let s = Math.min(window.innerWidth * 0.9, 560) / cRect.width;
         s = Math.min(s, (window.innerHeight * 0.66) / cRect.height, 1.35);
-
         const dx = window.innerWidth  / 2 - (cRect.left + cRect.width  / 2);
         const dy = window.innerHeight / 2 - (cRect.top  + cRect.height / 2);
 
-        // clip-path resta in lista per non interrompere la transizione
-        letterOuter.style.transition =
-            'transform 1.5s cubic-bezier(0.33, 0, 0.2, 1), clip-path 1.7s cubic-bezier(0.45, 0, 0.2, 1)';
+        letterOuter.style.transition = 'transform 1.3s cubic-bezier(0.33, 0, 0.2, 1), clip-path 1.7s cubic-bezier(0.45, 0, 0.2, 1)';
         letterOuter.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + s + ')';
-
         letterOuter._finalTransform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + s + ')';
-    }, 4700);
+    }, 4000);
 
-    // 4) la carta si dissolve dolcemente verso l'alto
+    // 4) DISSOLVENZA E SITO
     setTimeout(() => {
-        letterOuter.style.transition = 'transform 1.2s ease, opacity 1.05s ease';
+        letterOuter.style.transition = 'transform 1.2s ease, opacity 1s ease';
         letterOuter.style.opacity = '0';
-        letterOuter.style.transform = 'translateY(-26px) ' + letterOuter._finalTransform;
-    }, 6950);
+        letterOuter.style.transform = 'translateY(-20px) ' + letterOuter._finalTransform;
+    }, 6200);
 
-    setTimeout(() => { overlay.classList.add('flash'); }, 7300);
+    setTimeout(() => { overlay.classList.add('flash'); }, 6600);
 
     setTimeout(() => {
         mainContent.classList.add('visible');
         document.body.classList.add('revealed');
         heroBg.classList.add('loaded');
-    }, 7550);
+    }, 6850);
 
     setTimeout(() => {
         overlay.classList.remove('flash');
         overlay.classList.add('unflash');
-    }, 7700);
+    }, 7000);
 
     setTimeout(() => {
         scene.style.display = 'none';
@@ -889,7 +868,7 @@ function apriEnvelope() {
         scrollCta.addEventListener('click', () => {
             document.getElementById('detailsSection').scrollIntoView({ behavior: 'smooth' });
         });
-    }, 8200);
+    }, 6600);
 }
 
 window.addEventListener('scroll', () => {
