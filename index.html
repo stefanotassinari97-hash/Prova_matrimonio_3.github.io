@@ -770,6 +770,19 @@ body.revealed { overflow: auto; }
     </div>
 </div>
 
+<!-- ══════════ POPUP TESTIMONE ══════════ -->
+<div id="witnessModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:10001; align-items:center; justify-content:center;">
+    <div style="background:#fdf9f0; padding:2.2rem 2rem; border-radius:14px; max-width:420px; width:90%; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.4); border:1px solid rgba(122,158,126,0.3);">
+        <div style="font-size:2.6rem; margin-bottom:0.5rem;">🥂</div>
+        <h3 id="witnessTitle" style="font-family:'Playfair Display',serif; font-size:1.6rem; color:#4a7050; margin-bottom:0.6rem;">Ciao Roberto!</h3>
+        <p id="witnessText" style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:#111; margin-bottom:1.5rem;">Vuoi essere il mio testimone?</p>
+        <div id="witnessButtons">
+            <button onclick="answerWitness(true)" style="width:100%; padding:0.8rem; background:#4a7050; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold; margin-bottom:0.5rem;">Sì, con piacere! 💚</button>
+            <button onclick="answerWitness(false)" style="width:100%; padding:0.8rem; background:#ccc; color:#333; border:none; border-radius:6px; cursor:pointer;">Ci devo pensare…</button>
+        </div>
+    </div>
+</div>
+
 <script>
 const envStage    = document.getElementById('envStage');
 const envelope    = document.getElementById('envelope');
@@ -939,6 +952,31 @@ window.resetIdentify = function() {
     document.getElementById('stepAllergies').style.display = 'none';
 };
 
+/* ═══════════ POPUP TESTIMONE (Roberto Tassinari) ═══════════ */
+let witnessResolve = null;
+
+function showWitnessPopup() {
+    return new Promise(resolve => {
+        witnessResolve = resolve;
+        document.getElementById('witnessButtons').style.display = 'block';
+        document.getElementById('witnessTitle').textContent = 'Ciao Roberto!';
+        document.getElementById('witnessText').textContent  = 'Vuoi essere il mio testimone?';
+        document.getElementById('witnessModal').style.display = 'flex';
+    });
+}
+
+window.answerWitness = function(yes) {
+    document.getElementById('witnessButtons').style.display = 'none';
+    document.getElementById('witnessTitle').textContent = yes ? 'Grazie! 🎉' : 'Va bene, ti aspetto…';
+    document.getElementById('witnessText').textContent  = yes
+        ? 'Sapevo di poter contare su di te!'
+        : 'Hai tempo fino al grande giorno. 😉';
+    setTimeout(() => {
+        document.getElementById('witnessModal').style.display = 'none';
+        if (witnessResolve) { witnessResolve(); witnessResolve = null; }
+    }, 2200);
+};
+
 window.verifyGuest = async function() {
     const rawFirst = document.getElementById('inputFirstName').value.trim();
     const rawLast  = document.getElementById('inputLastName').value.trim();
@@ -947,6 +985,12 @@ window.verifyGuest = async function() {
     const inputFirst = normalizeStr(rawFirst);
     const inputLast  = normalizeStr(rawLast);
     fallbackName     = capitalizeWords(`${rawFirst} ${rawLast}`);
+
+    // Easter egg: se scrive Roberto Tassinari (anche invertito) compare il popup
+    const isRoberto =
+        (inputFirst === 'roberto' && inputLast === 'tassinari') ||
+        (inputFirst === 'tassinari' && inputLast === 'roberto');
+    if (isRoberto) { await showWitnessPopup(); }
 
     try {
         const snapshot = await get(ref(db, 'guests'));
